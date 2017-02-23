@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Building Realtime Apps with Firebase</title>
+
+    <meta name="description" content="Intro to Firebase">
+    <meta name="author" content="YOUR_NAME">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/firebase.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="code-box/code-box.html">
+    <link rel="import" href="code-box/code-example.html">
+
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <script>
+    window.addEventListener('load', installCounter);
+
+    function installCounter() {
+      var devsRef = new Firebase("https://firebase-website.firebaseio.com/stats/signups");
+      var counterSpan = document.getElementById('current-devs');
+      devsRef.on("value", function (snap) {
+        // Use thousand separator in counter.
+        counterSpan.textContent = snap.val().toLocaleString();
+      });
+    }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <small id="era">
+
+      </small>
+
+      <div class="slides">
+
+        <!--
+          Intro
+        -->
+        <section title="">
+          <br><br>
+          <h2>Intro to Firebase</h2>
+          <img src="images/firebase-logo.png" class="no-style">
+          <br> <br>
+          <p>
+            <h6>YOUR_NAME / <a href="http://twitter.com/YOUR_TWITTER_HANDLE">@YOUR_TWITTER_HANDLE</a></h6>
+
+          </p>
+        </section>
+
+        <section>
+          <p class="text-cream text-medium">The <span class="text-discs">Realtime Backend</span></p>
+          <p class="text-cream text-medium">for your App</p>
+        </section>
+
+        <section>
+          <p class="text-medium">Creating an app shouldn't require managing complex infrastructure.</p>
+        </section>
+
+        <section>
+          <h3>The Full Stack</h3>
+          <img src="images/full-stack.png" alt="The Full Stack" class="no-style" />
+        </section>
+
+        <section>
+          <p class="text-small">The full stack is never really that simple</p>
+          <img src="images/backend-reqs.gif" alt="" class="white-bg no-style" />
+        </section>
+
+        <section>
+          <p class="text-small">... and neither is the client side</p>
+          <br><br>
+          <img src="images/clients.png" alt="gdocs" class="no-style" />
+        </section>
+
+        <section>
+					<p class="text-medium era-point">The user doesn't care about your backend</p>
+				</section>
+
+        <section>
+          <h4>The user expects</h4>
+          <p class="text-small era-point">Speed</p>
+          <p class="text-small era-point">Offline</p>
+          <p class="text-small era-point">Multi-platform</p>
+          <p class="text-small era-point">Simple Authentication</p>
+        </section>
+
+        <!--
+          Firebase
+        -->
+        <section>
+          <h3>Firebase</h3>
+          <img src="images/firebase-logo.png" class="no-style era-point">
+          <br>
+          <p class="text-cream">The <span class="text-discs">Realtime Backend</span></p>
+          <p class="text-cream">for your App</p>
+        </section>
+
+        <section>
+          <h4>The Firebase Backend</h4>
+          <img src="images/data-box.png" class="no-style framework-logo">
+          <img src="images/login-box.png" class="no-style framework-logo">
+          <img src="images/security-box.png" class="no-style framework-logo">
+          <img src="images/hosting-box.png" class="no-style framework-logo">
+        </section>
+
+        <section>
+					<h3>Forget the Server</h3>
+					<p class="era-point">Firebase apps can run on client-side code only</p>
+					<br>
+					<img src="images/platforms.png" alt="" class="no-style framework-logo">
+				</section>
+
+        <section>
+          <img src="images/data-box.png" class="no-style framework-logo">
+        </section>
+
+        <section>
+          <h2>Cloud database</h2>
+          <p class="era-point">NoSQL data-store</p>
+          <p class="era-point">Returns JSON from a RESTful API</p>
+        </section>
+
+        <section>
+          <img src="images/simple-api.png" alt="" class="no-style">
+        </section>
+
+        <section>
+          <h2>Realtime Data</h2>
+          <p class="era-point text-cream">
+            Whenever <span class="text-discs">data is  updated in Firebase</span>,
+            it sends the update down to every <span class="text-tarheel">listening client</span>
+          </p>
+        </section>
+
+        <section>
+          <img src="images/Realtime-sync-anim.gif" alt="" class="no-style" style="max-width: 85%;">
+        </section>
+
+        <section>
+          <p class="text-medium">SDKs</p>
+          <img src="images/platforms.png" alt="" class="no-style">
+        </section>
+
+        <section>
+          <h2>Store Data</h2>
+          <code-box langs="JavaScript,Swift,Java">
+            <code-example lang="JavaScript">
+var ref = new Firebase("https://&lt;your-firebase-app&gt;.firebaseio.com/message");
+ref.set('All the things');
+            </code-example>
+            <code-example lang="Swift">
+let ref = Firebase(url: "https://&lt;your-firebase-app&gt;.firebaseio.com/message")
+ref.setValue("All the things")
+            </code-example>
+            <code-example lang="Java">
+Firebase ref = new Firebase("https://&lt;your-firebase-app&gt;.firebaseio.com/message");
+ref.setValue("All the things");
+            </code-example>
+          </code-box>
+
+        </section>
+
+        <section>
+          <h2>Sync Data</h2>
+
+          <code-box langs="JavaScript,Swift,Java">
+            <code-example lang="JavaScript">
+var ref = new Firebase("https://&lt;your-firebase-app&gt;.firebaseio.com/message");
+ref.on("value", function(snap) {
+  console.log(snap.val());
+});
+            </code-example>
+            <code-example lang="Swift">
+let ref = Firebase(url: "https://&lt;your-firebase-app&gt;.firebaseio.com/message")
+ref.observeEventType(.Value, withBlock: { snap in
+  println(snap.value)
+})
+            </code-example>
+            <code-example lang="Java">
+Firebase ref = new Firebase("https://&lt;your-firebase-app&gt;.firebaseio.com/message");
+ref.addValueEventListener(new ValueEventListener() {
+  @Override
+  public void onDataChange(DataSnapshot snapshot) {
+    System.out.println(snapshot.getValue());
+  }
+  @Override public void onCancelled(FirebaseError error) { }
+});
+            </code-example>
+          </code-box>
+
+        </section>
+
+        <section>
+          <h3>Offline</h3>
+          <img class="no-style" src="images/offline.png">
+        </section>
+
+        <section>
+          <h3>Intermittent Offline</h3>
+
+          <p class="text-small">What happens when you go through a tunnel?</p>
+          <br><br>
+          <p class="text-small fragment">
+            Firebase clients store a local cache of your data. When the user
+            goes offline, the app still works as expected with the local cache.
+          </p>
+
+        </section>
+
+        <section>
+          <h3>Extended Offline</h3>
+
+          <p class="text-small">What happens when you go on a flight?</p>
+          <br><br>
+          <p class="text-small fragment">
+            On mobile, Firebase persists data to a local store. The app will continue
+            to work even across app restarts.
+          </p>
+
+        </section>
+
+        <section>
+          <h3>One line of code</h3>
+
+          <code-box langs="Swift,Java">
+            <code-example lang="Swift">
+Firebase.defaultConfig().persistenceEnabled = true
+            </code-example>
+            <code-example lang="Java">
+Firebase.getDefaultConfig().setPersistenceEnabled(true);
+            </code-example>
+          </code-box>
+
+        </section>
+
+        <section>
+          <img src="images/login-box.png" class="no-style framework-logo">
+        </section>
+
+        <section>
+
+          <p class="era-point text-small">
+            Firebase supports several forms of authentication
+          </p>
+
+          <p class="era-point fragment">
+            Email &amp; Password
+          </p>
+
+          <p class="era-point fragment">
+             Google
+          </p>
+
+          <p class="era-point fragment">
+             Twitter
+          </p>
+
+          <p class="era-point fragment">
+             Facebook
+          </p>
+
+          <p class="era-point fragment">
+             Github
+          </p>
+
+          <p class="era-point fragment">
+             Anonymous
+          </p>
+
+          <p class="era-point fragment">
+             ...and even custom backends
+          </p>
+
+        </section>
+
+        <section class="hasCode">
+
+          <h3>Authentication</h3>
+
+          <code-box langs="JavaScript,Swift,Java">
+            <code-example lang="JavaScript" prop="one">
+// Login with Google
+ref.authWithOAuthPopup('google', function(error, authData) {
+  console.log(authData);
+});
+            </code-example>
+
+            <code-example lang="Swift">
+ref.authWithOAuthProvider("google", token: "&lt;OAuth Token&gt;",
+    withCompletionBlock: { error, authData in
+    if error != nil {
+        // Error authenticating with Firebase with OAuth token
+    } else {
+        // User is now logged in!
+        println("Successfully logged in! \(authData)")
+    }
+})
+            </code-example>
+
+            <code-example lang="Java">
+ref.authWithOAuthToken("google", "&lt;OAuth Token&gt;", new Firebase.AuthResultHandler() {
+    @Override
+    public void onAuthenticated(AuthData authData) {
+        // the Google user is now authenticated with your Firebase app
+    }
+
+    @Override
+    public void onAuthenticationError(FirebaseError firebaseError) {
+        // there was an error
+    }
+});
+            </code-example>
+
+          </code-box>
+
+        </section>
+
+        <section class="hasCode">
+
+          <h3>Authentication</h3>
+
+          <code-box langs="JavaScript,Swift,Java">
+            <code-example lang="JavaScript" prop="one">
+// Listen for authentcated users
+ref.onAuth(function(authData) {
+  if(authData) {
+    console.log('User is logged in!');
+  }
+});
+            </code-example>
+
+            <code-example lang="Swift">
+// Listen for authenticated users
+ref.observeAuthEventWithBlock { authData in
+    if authData != nil {
+        println("User is logged in! \(authData)")
+    }
+}
+            </code-example>
+
+            <code-example lang="Java">
+// Listen for authentcated users
+ref.addAuthStateListener(new Firebase.AuthStateListener() {
+    @Override
+    public void onAuthStateChanged(AuthData authData) {
+        if (authData != null) {
+            System.out.println("User is logged in!");
+        }
+    }
+});
+            </code-example>
+
+          </code-box>
+
+        </section>
+
+        <section>
+          <img src="images/security-box.png" class="no-style framework-logo">
+        </section>
+
+        <section>
+          <h3>Security</h3>
+          <p class="era-point">
+            By default everyone can write and read
+          </p>
+					<pre>
+						<code data-trim class="json">
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+  }
+}
+						</code>
+					</pre>
+        </section>
+
+        <section>
+          <p class="era-point">
+            Everyone can read, but no one can write
+          </p>
+					<pre>
+						<code data-trim class="json">
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+  }
+}
+						</code>
+					</pre>
+        </section>
+
+        <section>
+          <p class="era-point">
+            Secure specific parts of your Firebase
+          </p>
+					<pre>
+						<code data-trim class="json">
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "message": {
+      ".write": true 
+    }
+  }
+}
+						</code>
+					</pre>
+        </section>
+
+        <section>
+          <p class="era-point">
+            Special variables to power authentication
+          </p>
+					<pre>
+						<code data-trim class="json">
+{
+  "rules": {
+    ".read": true,
+    "message": {
+      ".write": "auth !== null",
+      ".validate": "!data.exists()"
+    }
+  }
+}
+						</code>
+					</pre>
+        </section>
+
+
+        <section>
+					<h3>Security</h3>
+					<p class="text-small">Use $wildcards as route parameters</p>
+					<pre>
+						<code data-trim class="json">
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$userid": {
+        ".read": "true",
+        ".write": "auth.uid === $userid"
+      }
+    }
+  }
+}
+						</code>
+					</pre>
+
+				</section>
+
+        <section>
+          <img src="images/hosting-box.png" class="no-style framework-logo">
+        </section>
+
+  			<section>
+  					<h3>Hosting</h3>
+  					<p class="text-small">When you're ready to launch</p>
+  					<pre>
+  						<code data-trim class="bash">
+firebase init
+# select your firebase
+firebase deploy
+# party time
+  						</code>
+  					</pre>
+  			</section>
+
+        <section>
+					<h3>Hosting</h3>
+					<p class="text-small era-point">Production-grade</p>
+          <p class="text-small era-point">Static Asset</p>
+					<p class="text-small era-point">Free SSL</p>
+					<p class="text-small era-point">CDN cached assets</p>
+					<p class="text-small era-point">One click rollbacks</p>
+				</section>
+
+        <section>
+          <h1>(Optional) Live Coding</h1>
+        </section>
+
+        <section>
+					<h3>Tooling & Integration</h3>
+				</section>
+
+
+        <section>
+          <h3>Bindings</h3>
+          <img src="images/backbonejs.png" class="framework-logo no-style" />
+          <img src="images/emberjs.png" class="framework-logo no-style" />
+          <img src="images/react.png" class="framework-logo no-style" />
+          <img src="images/angularjs.png" class="framework-logo no-style" />
+        </section>
+
+        <section>
+					<h3>AngularFire</h3>
+					<p class="text">A chat app in AngularFire</p>
+					<pre>
+						<code data-trim class="javascript">
+var app = app.module('app', ['firebase']);
+app.controller('ChatCtrl', function($scope, $firebaseArray) {
+  var ref = new Firebase('https://&lt;your-firebase&gt;.firebaseio.com/messages');
+  $scope.messages = $firebaseArray(ref);
+});
+						</code>
+					</pre>
+					<pre>
+						<code data-trim class="html">
+&lt;html&gt;
+  &lt;body ng-app="app"&gt;
+    &lt;div ng-controller="ChatCtrl"&gt;
+      &lt;p ng-repeat="message in messages"&gt;message.text&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+						</code>
+					</pre>
+				</section>
+
+        <section>
+					<h3>Geofire</h3>
+					<p class="text-smaller">Store and query items based on their geographic location in realtime</p>
+					<iframe src="https://geofire.firebaseapp.com/sfVehicles/" height="450px" width="100%"></iframe>
+				</section>
+
+				<section>
+					<h3>Well Documented</h3>
+					<a class="text-tarheel" href="https://firebase.com/docs">
+						<img src="images/docs-site.png">
+					</a>
+				</section>
+
+        <section>
+          <h4>Firebase meta-data</h4>
+          <p class="era-point">
+            <span id="current-devs">170,000+</span> registered developers
+          </p>
+          <p class="era-point">
+            1M concurrent users on Firebase sites
+          </p>
+          <p class="era-point">
+            Joined Google October, 2014
+          </p>
+        </section>
+
+        <section>
+          <h4>Firebase in Production</h4>
+          <ul>
+            <li class="era-point">
+              <span class="text-discs">Twitch.tv</span> - Notifying users when realtime streams go live
+            </li>
+            <li class="era-point">
+              <span class="text-discs">Citrix</span> - Manages presence in GoTo Meeting
+            </li>
+            <li class="era-point">
+              <span class="text-discs">CBS</span> - Powers the chat for Big Brother's Live Stream
+            </li>
+            <li class="era-point">
+              <span class="text-discs">Warby Parker</span> - Powering pneumatic tubes
+            </li>
+          </ul>
+        </section>
+
+        <section>
+					<h2>Focus on your app</h2>
+					<p class="era-point">The user doesn't care about the backend</p>
+					<p class="era-point">What matters is that your app is
+						<span class="text-tarheel">fast and enjoyable</span>
+					</p>
+				</section>
+
+        <section>
+					<h2>Complete Platform</h2>
+					<img src="images/data-box.png" class="no-style framework-logo">
+					<img src="images/security-box.png" class="no-style framework-logo">
+					<img src="images/login-box.png" class="no-style framework-logo">
+					<img src="images/hosting-box.png" class="no-style framework-logo">
+				</section>
+
+        <section>
+          <h1>ASK ME QUESTIONS</h1>
+          <h5>YOUR_NAME / <a href="http://twitter.com/YOUR_TWITTER_HANDLE">@YOUR_TWITTER_HANDLE</a></h5>
+          <h5>YOUR_JOB / <a href="http://twitter.com/YOUR_COMPANY_TWITTER_HANDLE">@YOUR_COMPANY</a></h5>
+        </section>
+
+        <section>
+          <h2>Assets Used</h2>
+
+          <ul>
+            <li><a href="https://thenounproject.com/search/?q=database&i=9658">https://thenounproject.com/search/?q=database&i=9658</a></li>
+            <li><a href="https://thenounproject.com/search/?q=server&i=34235">https://thenounproject.com/search/?q=server&i=34235</a></li>
+            <li><a href="https://thenounproject.com/search/?q=api&i=137607">https://thenounproject.com/search/?q=api&i=137607</a></li>
+            <li><a href="https://thenounproject.com/search/?q=users&i=36217">https://thenounproject.com/search/?q=users&i=36217</a></li>
+            <li><a href="https://thenounproject.com/search/?q=macbook&i=20320">https://thenounproject.com/search/?q=macbook&i=20320</a></li>
+            <li><a href="https://thenounproject.com/search/?q=iphone&i=5765">https://thenounproject.com/search/?q=iphone&i=5765</a></li>
+            <li><a href="https://thenounproject.com/search/?q=nexus-5&i=26045">https://thenounproject.com/search/?q=nexus-5&i=26045</a></li>
+          </ul>
+
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+    <script>
+
+      function signPostEra( event ) {
+        var title = event.currentSlide.attributes.title;
+
+        if(title) {
+          var era = document.getElementById('era');
+          era.innerText = title.value;
+        }
+      }
+
+      Reveal.addEventListener( 'ready', function( event ) {
+        signPostEra( event );
+      });
+
+      Reveal.addEventListener( 'slidechanged', function( event ) {
+        signPostEra( event );
+      });
+
+    </script>
+  </body>
+</html>
