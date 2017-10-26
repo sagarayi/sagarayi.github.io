@@ -1,7 +1,7 @@
 <span id="a">sagar@ayi</span>:<span id="b">~</span><span id="c">$</span> cat sagarayi.txt<br/><br/>
 Hi, I'm Sagar Ayi.<!-- laglaglaglaglaglaglaglaglaglaglaglag -->
 <p>I majored in Computer Science.  I graduated from <a href="http://www.vtu.ac.in">Vishwesvaraya Technological University</a> in the year 2016 .</p>
-<p>I love to code in Objective-C . Now learning to code applications on the iOS platform.</p>
-<p>My hobbies are to  play FPS games, listen to music, and travel.</p>
+<p>I love to create apps and to learn from my experiences.</p>
+<p>My hobby is driving.</p>
 If you would like to get in touch with me<!-- slightdelayhere-->, feel free to send me an email.<!-- longlongcomment --> My email address is: <a href="mailto:ayisagar@gmail.com">ayisagar@gmail.com</a>
 <p>And you can check out my <a href="https://drive.google.com/open?id=0BxUJ9_maNwLBRHhpdks4ZEdRbHc">Resume</a>. The resume is designed using a Latex template(BTW the template was designed by Debarghya Das, thanks <a href="http://debarghyadas.com/">deedy</a>).</p>
