@@ -28,42 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Blog Toggle Functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const blogToggle = document.getElementById('blog-toggle');
-    const blogSection = document.getElementById('blog');
-
-    if (blogToggle && blogSection) {
-        blogToggle.addEventListener('click', () => {
-            const isCollapsed = blogSection.classList.contains('collapsed');
-
-            if (isCollapsed) {
-                // Expand blog section
-                blogSection.classList.remove('collapsed');
-                blogToggle.textContent = 'Close Blog';
-
-                // Scroll to blog section after a short delay to allow expansion
-                setTimeout(() => {
-                    blogSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }, 100);
-            } else {
-                // Collapse blog section
-                blogSection.classList.add('collapsed');
-                blogToggle.textContent = 'Blog';
-
-                // Scroll back to top
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-});
-
 
 // Typing Animation
 const typingText = document.querySelector('.typing-text');
@@ -71,8 +35,7 @@ const phrases = [
     'Software Engineer',
     'iOS Developer',
     'macOS Specialist',
-    'Cross-Platform Expert',
-    'Team Leader'
+    'Cross-Platform Expert'
 ];
 
 let phraseIndex = 0;
