@@ -1,26 +1,20 @@
-# Sagar's Personal Portfolio 🚀
+# Sagar Ayi's Personal Website
 
-A minimalistic, high-performance personal website built to showcase my journey as a Software Engineer. Designed with modern aesthetics, glassmorphism, and smooth interactions.
+Static personal website for [sagarayi.github.io](https://sagarayi.github.io/), restored to the older Hugo Coder-style template and updated with current professional content.
 
-## ✨ Features
-- **Modern UI/UX**: Dark mode with vibrant gradients and glassmorphism cards.
-- **Interactive**: Typing animations, scroll-triggered reveals, and hover effects.
-- **Responsive**: Mobile-first design that looks great on any device.
-- **Blog Integration**: Collapsible blog section featuring my latest thoughts.
-- **Performance**: Zero dependencies, pure HTML/CSS/JS.
+## Contents
 
-## 🛠️ Tech Stack
-- **Core**: HTML5, CSS3, Vanilla JavaScript
-- **Fonts**: Lato & Merriweather (Google Fonts)
-- **Icons**: SVG & CSS-based
+- `index.html` - minimal landing page with profile links.
+- `about/` - updated professional profile, experience, skills, education, recognition, and contact details.
+- `posts/` - archived blog posts from the older Hugo site.
+- `css/`, `images/`, `less/` - restored template assets.
 
-## 🚀 Getting Started
-Simply open `index.html` in your favorite browser to view the site locally. No build process required!
+## Local Preview
 
-## 👨‍💻 Author
-**Sagar Madhu Ayi**
-- [LinkedIn](https://www.linkedin.com/in/sagarayi)
-- [Email](mailto:ayisagar@gmail.com)
+Run a static server from this directory:
 
----
-*Built with passion and code.*
+```sh
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
